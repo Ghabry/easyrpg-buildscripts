@@ -53,7 +53,7 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
+export DEVKITPRO=${WORKSPACE}/opt/devkitpro
 export DEVKITPPC=${DEVKITPRO}/devkitPPC
 export PATH=$DEVKITPPC/bin:$PATH
 

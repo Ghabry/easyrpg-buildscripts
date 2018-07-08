@@ -10,10 +10,9 @@ source $SCRIPT_DIR/../shared/import.sh
 
 msg " [1] Installing devkitA64"
 
-rm -rf devkitPro/
-wget -nv https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitA64update.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitA64update.pl
-perl devkitA64update.pl
+rm -rf $PWD/opt
+download_and_extract https://easyrpg.org/downloads/sources/devkitpro-pacman.tar.xz 
+echo -e "\n" | ./opt/devkitpro/pacman/bin/pacman -r $PWD --config $PWD/opt/devkitpro/pacman/etc/pacman.conf --cachedir $PWD/usr/share/pacman-cache -Sy switch-dev
 
 msg " [2] Downloading generic libraries"
 
@@ -90,11 +89,3 @@ download_and_extract $ICU_URL
 # icudata
 rm -f $ICUDATA_FILES
 download_and_extract $ICUDATA_URL
-
-msg " [3] Downloading platform libraries"
-
-# Remove this later when libnx becomes more stable
-# (also shipped by devkitA64)
-
-rm -rf libnx
-git_clone https://github.com/switchbrew/libnx

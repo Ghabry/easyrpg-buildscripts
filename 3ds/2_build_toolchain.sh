@@ -35,6 +35,9 @@ if [ ! -f .patches-applied ]; then
 	cp -rup icu icu-native
 	patch -Np0 < $SCRIPT_DIR/icu59-3ds.patch
 
+	# Remove -Werror from sf2dlib
+	perl -pi -e 's/-Werror//' sf2dlib/libsf2d/Makefile
+
 	touch .patches-applied
 fi
 
@@ -42,7 +45,7 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=$WORKSPACE/devkitPro
+export DEVKITPRO=$WORKSPACE/opt/devkitpro
 export DEVKITARM=$DEVKITPRO/devkitARM
 export PATH=$DEVKITARM/bin:$PATH
 

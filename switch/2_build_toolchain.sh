@@ -55,7 +55,7 @@ cd $WORKSPACE
 
 echo "Preparing toolchain"
 
-export DEVKITPRO=${WORKSPACE}/devkitPro
+export DEVKITPRO=${WORKSPACE}/opt/devkitpro
 export PATH=${DEVKITPRO}/devkitA64/bin:$PATH
 
 export PLATFORM_PREFIX=$WORKSPACE
@@ -89,8 +89,6 @@ install_lib_icu_native
 
 # Install libraries
 set_build_flags
-
-install_lib_nx
 
 install_lib_zlib
 install_lib $LIBPNG_DIR $LIBPNG_ARGS

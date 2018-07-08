@@ -10,10 +10,9 @@ source $SCRIPT_DIR/../shared/import.sh
 
 msg " [1] Installing devkitARM"
 
-rm -rf $PWD/devkitPro
-download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitARMupdate.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitARMupdate.pl
-perl devkitARMupdate.pl
+rm -rf $PWD/opt
+download_and_extract https://easyrpg.org/downloads/sources/devkitpro-pacman.tar.xz 
+echo -e "\n" | ./opt/devkitpro/pacman/bin/pacman -r $PWD --config $PWD/opt/devkitpro/pacman/etc/pacman.conf --cachedir $PWD/usr/share/pacman-cache -Sy 3ds-dev
 
 msg " [2] Downloading generic libraries"
 

@@ -8,6 +8,6 @@ source $SCRIPT_DIR/../shared/import.sh
 
 cleanup
 
-rm -rf sf2dlib/
+rm -rf sf2dlib/ etc/ tmp/ usr/
 
 echo " -> done"

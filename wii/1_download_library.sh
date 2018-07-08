@@ -13,10 +13,9 @@ source $SCRIPT_DIR/packages.sh
 
 msg " [1] Installing devkitPPC"
 
-rm -rf devkitPro/
-download https://raw.githubusercontent.com/devkitPro/installer/master/perl/devkitPPCupdate.pl
-perl -pi -e "s|/opt/devkitpro|$PWD/devkitPro|" devkitPPCupdate.pl
-perl devkitPPCupdate.pl
+rm -rf $PWD/opt
+download_and_extract https://easyrpg.org/downloads/sources/devkitpro-pacman.tar.xz 
+echo -e "\n" | ./opt/devkitpro/pacman/bin/pacman -r $PWD --config $PWD/opt/devkitpro/pacman/etc/pacman.conf --cachedir $PWD/usr/share/pacman-cache -Sy wii-dev
 
 msg " [2] Downloading generic libraries"
 
