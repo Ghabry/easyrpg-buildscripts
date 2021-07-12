@@ -48,7 +48,9 @@ if [ ! -f .patches-applied ]; then
 		patch -Np1 < $SCRIPT_DIR/../shared/extra/harfbuzz-climits.patch
 	)
 
+	# Fix icu build
 	cp -rup icu icu-native
+	patch -Np0 < $SCRIPT_DIR/../shared/extra/icu69-no-mutex.patch
 
 	touch .patches-applied
 fi
