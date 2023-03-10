@@ -24,53 +24,59 @@ export WORKSPACE=$PWD
 # Prepare toolchain
 
 # Download Android SDK
-msg " [1] Installing Android SDK"
-rm -rf android-sdk/
+msg " [1] Checking and installing Android SDK"
 
-# Linux
-if [ $os = "Linux" ]; then
-	SDK_PLATFORM=linux
-# MacOS
-elif [ $os = "Darwin" ]; then
-	SDK_PLATFORM=mac
+if ! [ -z "$ANDROID_HOME" ]; then
+	echo "Using pre-installed Android SDK at $ANDROID_HOME"
 else
-	msg "Only Linux and macOS are supported currently. Sorry! :("
-	exit 1
+	msg " [1] Installing Android SDK"
+	rm -rf android-sdk/
+
+	# Linux
+	if [ $os = "Linux" ]; then
+		SDK_PLATFORM=linux
+	# MacOS
+	elif [ $os = "Darwin" ]; then
+		SDK_PLATFORM=mac
+	else
+		msg "Only Linux and macOS are supported currently. Sorry! :("
+		exit 1
+	fi
+
+	SDK_VERSION="8512546_latest"
+	SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
+	download $SDK_URL
+	unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
+
+	mkdir -p android-sdk/cmdline-tools/
+	mv cmdline-tools android-sdk/cmdline-tools/latest
+
+	PATH=$PATH:$WORKSPACE/android-sdk
+
+	msg " [2] Installing SDK and Platform-tools"
+
+	# Otherwise installed to the wrong directory
+	cd android-sdk
+
+	# Android SDK Build-tools, revision 33.0.0
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;33.0.0"
+	# Android SDK Platform-tools
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platform-tools"
+	# SDK Platform Android 13, API 33
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-33"
+	# Android Support Library Repository
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;android;m2repository"
+	# Google Repository
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;google;m2repository"
+	# CMake 3.22.1
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "cmake;3.22.1"
+
+	msg " [3] Installing Android NDK"
+
+	echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;21.4.7075529"
+
+	cd ..
 fi
-
-SDK_VERSION="8512546_latest"
-SDK_URL="https://dl.google.com/android/repository/commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip"
-download $SDK_URL
-unzip commandlinetools-${SDK_PLATFORM}-${SDK_VERSION}.zip
-
-mkdir -p android-sdk/cmdline-tools/
-mv cmdline-tools android-sdk/cmdline-tools/latest
-
-PATH=$PATH:$WORKSPACE/android-sdk
-
-msg " [2] Installing SDK and Platform-tools"
-
-# Otherwise installed to the wrong directory
-cd android-sdk
-
-# Android SDK Build-tools, revision 33.0.0
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "build-tools;33.0.0"
-# Android SDK Platform-tools
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platform-tools"
-# SDK Platform Android 13, API 33
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "platforms;android-33"
-# Android Support Library Repository
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;android;m2repository"
-# Google Repository
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "extras;google;m2repository"
-# CMake 3.22.1
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "cmake;3.22.1"
-
-msg " [3] Installing Android NDK"
-
-echo "y" | ./cmdline-tools/latest/bin/sdkmanager --verbose "ndk;21.4.7075529"
-
-cd ..
 
 msg " [4] Preparing libraries"
 

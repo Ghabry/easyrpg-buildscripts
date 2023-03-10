@@ -125,7 +125,13 @@ function build() {
 	install_lib_liblcf
 }
 
-export SDK_ROOT=$WORKSPACE/android-sdk
+if ! [ -z "$ANDROID_HOME" ]; then
+	echo "Using pre-installed Android SDK at $ANDROID_HOME"
+	export SDK_ROOT=$ANDROID_HOME
+else
+	export SDK_ROOT=$WORKSPACE/android-sdk
+fi
+
 export NDK_ROOT=$SDK_ROOT/ndk/21.4.7075529
 
 export MAKEFLAGS="-j${nproc:-2}"
