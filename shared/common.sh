@@ -73,10 +73,16 @@ function test_ccache {
 function install_lib {
 	msg "**** Building ${1%-*} ****"
 
+	if [ "$BUILD_SHARED" == "1" ]; then
+		shared="--enable-shared"
+	else
+		shared="--disable-shared"
+	fi
+
 	(cd $1
 		shift
 
-		$CONFIGURE_WRAPPER ./configure --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
+		$CONFIGURE_WRAPPER ./configure --prefix=$PLATFORM_PREFIX $shared --enable-static \
 			--disable-dependency-tracking --enable-silent-rules \
 			--host=$TARGET_HOST --cache-file="$PLATFORM_PREFIX/config.cache" $@
 		make clean
@@ -112,7 +118,13 @@ function install_lib_cmake {
 			CMAKE_RANLIB=
 		fi
 
-		$CMAKE_WRAPPER cmake . -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=OFF \
+		if [ "$BUILD_SHARED" == "1" ]; then
+			shared="ON"
+		else
+			shared="OFF"
+		fi
+
+		$CMAKE_WRAPPER cmake . -GNinja -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=$shared \
 			-DCMAKE_C_FLAGS="$CFLAGS $CPPFLAGS" -DCMAKE_CXX_FLAGS="$CXXFLAGS $CPPFLAGS" \
 			-DCMAKE_INSTALL_LIBDIR=lib $CMAKE_AR $CMAKE_NM $CMAKE_RANLIB \
 			-DCMAKE_INSTALL_PREFIX=$PLATFORM_PREFIX -DCMAKE_SYSTEM_NAME=$CMAKE_SYSTEM_NAME \
@@ -137,8 +149,14 @@ function install_lib_zlib {
 function install_lib_mpg123 {
 	msg "**** Building libmpg123 ****"
 
+	if [ "$BUILD_SHARED" == "1" ]; then
+		shared="--enable-shared"
+	else
+		shared="--disable-shared"
+	fi
+
 	(cd $MPG123_DIR
-		$CONFIGURE_WRAPPER ./configure --prefix=$PLATFORM_PREFIX --disable-shared --enable-static \
+		$CONFIGURE_WRAPPER ./configure --prefix=$PLATFORM_PREFIX $shared --enable-static \
 			--disable-dependency-tracking --enable-silent-rules \
 			--host=$TARGET_HOST --cache-file="$PLATFORM_PREFIX/config.cache" \
 			--with-cpu=generic --disable-fifo --disable-ipv6 --disable-network \
@@ -163,6 +181,12 @@ function install_lib_liblcf {
 function install_lib_icu_native {
 	msg "**** Building ICU (native) ****"
 
+	if [ "$BUILD_SHARED" == "1" ]; then
+		shared="yes"
+	else
+		shared="no"
+	fi
+
 	(cd icu-native/source
 		unset CC
 		unset CXX
@@ -172,7 +196,7 @@ function install_lib_icu_native {
 		unset LDFLAGS
 
 		chmod u+x configure
-		./configure --enable-static --enable-shared=no $ICU_ARGS
+		./configure --enable-static --enable-shared=$shared $ICU_ARGS
 		make
 	)
 }
@@ -182,6 +206,12 @@ function install_lib_icu_native {
 function install_lib_icu_native_without_assembly {
 	msg "**** Building ICU (native without ASM) ****"
 
+	if [ "$BUILD_SHARED" == "1" ]; then
+		shared="yes"
+	else
+		shared="no"
+	fi
+
 	(cd icu-native/source
 		unset CC
 		unset CXX
@@ -191,7 +221,7 @@ function install_lib_icu_native_without_assembly {
 		unset LDFLAGS
 
 		chmod u+x configure
-		CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure --enable-static --enable-shared=no $ICU_ARGS
+		CPPFLAGS="-DBUILD_DATA_WITHOUT_ASSEMBLY -DU_DISABLE_OBJ_CODE" ./configure --enable-static --enable-shared=$shared $ICU_ARGS
 		make
 	)
 }
@@ -201,11 +231,17 @@ function install_lib_icu_cross {
 
 	export ICU_CROSS_BUILD=$PWD/icu-native/source
 
+	if [ "$BUILD_SHARED" == "1" ]; then
+		shared="yes"
+	else
+		shared="no"
+	fi
+
 	(cd icu/source
 		cp config/mh-linux config/mh-unknown
 
 		chmod u+x configure
-		$CONFIGURE_WRAPPER ./configure --enable-static --enable-shared=no --prefix=$PLATFORM_PREFIX \
+		$CONFIGURE_WRAPPER ./configure --enable-static --enable-shared=$shared --prefix=$PLATFORM_PREFIX \
 			--host=$TARGET_HOST --with-cross-build=$ICU_CROSS_BUILD \
 			--enable-tools=no $ICU_ARGS
 		make clean
