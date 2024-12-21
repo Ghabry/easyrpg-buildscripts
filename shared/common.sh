@@ -32,7 +32,7 @@ function download {
 
 	# Fallback to easyrpg.org when <100KB/s for >3s
 	if [ "x$USE_EASYRPG_MIRROR" == "x1" ] || \
-		! curl -sSLOR -y3 -Y102400 --connect-timeout 3 $url; then
+		! curl --fail -sSLOR -y3 -Y102400 --connect-timeout 3 $url; then
 		curl -sSLOR https://easyrpg.org/downloads/sources/$file
 	fi
 	[ $? -eq 0 ] && echo "done."
@@ -61,9 +61,6 @@ function git_clone {
 function download_liblcf {
 	if [ "$BUILD_LIBLCF" == "1" ]; then
 		git_clone "https://github.com/easyrpg/liblcf"
-		(cd liblcf
-			autoreconf -fi
-		)
 	fi
 }
 
@@ -242,7 +239,7 @@ function install_lib_meson {
 
 function install_lib_liblcf {
 	if [ "$BUILD_LIBLCF" == "1" ]; then
-		install_lib liblcf --disable-update-mimedb --disable-tools
+		install_lib_cmake liblcf -DLIBLCF_UPDATE_MIMEDB=OFF -DLIBLCF_ENABLE_TOOLS=OFF -DLIBLCF_ENABLE_TESTS=OFF
 	fi
 }
 
@@ -435,7 +432,7 @@ function cleanup {
 	libvorbis-*/ tremor-*/ mpg123-*/ libsndfile-*/ libxmp-lite-*/ speexdsp-*/ \
 	libsamplerate-*/ wildmidi-*/ opus-*/ opusfile-*/ icu/ icu-native/ icu-cross/ \
 	SDL2-*/ SDL2_image-*/ fmt-*/ FluidLite-*/ fluidsynth-*/ json-*/ inih-*/ \
-	lhasa-*/ liblcf/
+	lhasa-*/ freeimage-* liblcf/
 	rm -f *.zip *.bz2 *.gz *.xz *.tgz icudt* .patches-applied config.cache meson-cross.txt
 	rm -rf sbin/ share/
 	rm -f lib/*.la
