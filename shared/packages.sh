@@ -17,9 +17,9 @@ FREETYPE_URL="https://download.savannah.gnu.org/releases/freetype/freetype-2.13.
 FREETYPE_ARGS="-DFT_DISABLE_BZIP2=ON -DFT_DISABLE_BROTLI=ON"
 FREETYPE_DIR="freetype-2.13.3"
 
-HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.1.0/harfbuzz-10.1.0.tar.xz"
+HARFBUZZ_URL="https://github.com/harfbuzz/harfbuzz/releases/download/10.2.0/harfbuzz-10.2.0.tar.xz"
 HARFBUZZ_ARGS="-Dfreetype=enabled -Dtests=disabled -Dutilities=disabled" # TODO disable subset
-HARFBUZZ_DIR="harfbuzz-10.1.0"
+HARFBUZZ_DIR="harfbuzz-10.2.0"
 
 PIXMAN_URL="https://cairographics.org/releases/pixman-0.44.2.tar.gz"
 PIXMAN_ARGS="-Dtests=disabled -Ddemos=disabled -Dlibpng=disabled"
@@ -72,9 +72,9 @@ OPUSFILE_URL="https://github.com/xiph/opusfile/releases/download/v0.12/opusfile-
 OPUSFILE_ARGS="--disable-http --disable-examples"
 OPUSFILE_DIR="opusfile-0.12"
 
-FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.2.tar.gz"
+FLUIDSYNTH_URL="https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.3.tar.gz"
 FLUIDSYNTH_ARGS="-DLIB_SUFFIX=''"
-FLUIDSYNTH_DIR="fluidsynth-2.4.2"
+FLUIDSYNTH_DIR="fluidsynth-2.4.3"
 
 FLUIDLITE_URL="https://github.com/divideconcept/FluidLite/archive/57a0e74e708f699b13d7c85b28a4e1ff5b71887c.zip"
 FLUIDLITE_ARGS="-DFLUIDLITE_BUILD_STATIC=ON -DFLUIDLITE_BUILD_SHARED=OFF"
@@ -84,9 +84,9 @@ NLOHMANNJSON_URL="https://github.com/nlohmann/json/archive/v3.11.3.tar.gz"
 NLOHMANNJSON_DIR="json-3.11.3"
 NLOHMANNJSON_ARGS="-DJSON_BuildTests=OFF"
 
-FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.1/fmt-11.1.1.zip"
+FMT_URL="https://github.com/fmtlib/fmt/releases/download/11.1.3/fmt-11.1.3.zip"
 FMT_ARGS="-DFMT_DOC=OFF -DFMT_TEST=OFF"
-FMT_DIR="fmt-11.1.1"
+FMT_DIR="fmt-11.1.3"
 
 INIH_URL="https://github.com/benhoyt/inih/archive/refs/tags/r58.tar.gz"
 INIH_DIR="inih-r58"
@@ -104,8 +104,8 @@ ICU_ARGS="--enable-strict=no --disable-tests --disable-samples \
 ICUDATA_URL=https://ci.easyrpg.org/job/icudata/lastSuccessfulBuild/artifact/icudata76_all.tar.gz
 ICUDATA_FILES="icudt*.dat"
 
-SDL2_URL="https://libsdl.org/release/SDL2-2.30.11.tar.gz"
-SDL2_DIR="SDL2-2.30.11"
+SDL2_URL="https://libsdl.org/release/SDL2-3.2.4.tar.gz"
+SDL2_DIR="SDL2-3.2.4"
 
 # 3.18.0, only needed for lmu2png tool
 FREEIMAGE_URL="https://github.com/carstene1ns/freeimage-easyrpg/archive/d82954e4adcb6c1b223bd3cb2e953b6bbf54dfcd.zip"
